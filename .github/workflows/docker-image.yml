@@ -17,7 +17,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: |
+        IMAGE_TAG=my-image-name:$(date +%s) # Save the tag to a variable
+        docker build . --file Dockerfile --tag $IMAGE_TAG # Use the tag for the build
+        echo "::set-output name=image_tag::$IMAGE_TAG" # Save the tag as an output for later use
 
   # Log in to Docker Hub or GitHub Container Registry
     - name: Log in to Docker Hub
@@ -28,4 +31,6 @@ jobs:
 
   # Push the Docker image
     - name: Push the Docker image to Docker Hub or GitHub Container Registry
-      run: docker push my-image-name:$(date +%s)
+      run: |
+        IMAGE_TAG=$(echo ${{ steps.build_image.outputs.image_tag }})  # Get the tag from the build step
+        docker push $IMAGE_TAG  # Push using the same tag
