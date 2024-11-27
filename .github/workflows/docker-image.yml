@@ -5,9 +5,9 @@ on:
     branches: [ "main", "dev" ]
   pull_request:
     branches: [ "main", "dev" ]
- schedule:
+  schedule:
     - cron: "0 0 * * *"  # This runs the workflow every day at midnight UTC
-    
+
 jobs:
 
   build:
