@@ -13,9 +13,18 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'  # Specify your Python version
+
+    - name: Run Unit Tests
+      run: python -m unittest tests.py #Run python tests
+        
     - name: Build the Docker image
       id: build_image  # This id is necessary to refer to this step's output later
       run: |
