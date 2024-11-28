@@ -2,7 +2,6 @@ import unittest
 from tasks import Dictionary, get_total_costs, new_word
 
 class TestDictionary(unittest.TestCase):
-    
     # Set up initial state with a Dictionary instance and a sample entry
     def setUp(self):
         self.d = Dictionary()
@@ -24,8 +23,7 @@ class TestDictionary(unittest.TestCase):
         # Ensure that looking up a non-existent entry returns the appropriate message
         self.assertEqual(self.d.look('Banana'),"Can't find entry for Banana")
 
-class TestGetTotalCosts(unittest.TestCase):
-    
+class TestGetTotalCosts(unittest.TestCase):  
     # Set up initial state with a sample costs dictionary
     def setUp(self):
         self.costs = {'socks': 5, 'shoes': 60, 'sweater': 30}
@@ -84,8 +82,7 @@ class TestGetTotalCosts(unittest.TestCase):
          # Ensure that passing a non-numeric tax raises a ValueError
          get_total_costs({}, [], "not_a_number")
 
-class TestNewWord(unittest.TestCase):
-    
+class TestNewWord(unittest.TestCase):  
     # Test case for valid input: first character of each word is taken to form the new word
     def test_valid_case_1(self):
         words = ["yodas", "best", "has"]

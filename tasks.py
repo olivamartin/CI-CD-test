@@ -15,7 +15,6 @@ class Dictionary:
             return "Can't find entry for " + key
 
 def get_total_costs(costs_dict, items, tax):
-
     #Verify instances of the input parameters 
     if not isinstance(costs_dict, dict):
             raise ValueError("First argument must be a dictionary.")
@@ -34,7 +33,6 @@ def get_total_costs(costs_dict, items, tax):
         raise RuntimeError(f"Error calculating total costs: {e}")
 
 def new_word(words):
-
     formed_word = ''
         # Iterate over each word in the list 'words' and its index
     for i, word in enumerate(words):

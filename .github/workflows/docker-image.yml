@@ -5,27 +5,44 @@ on:
     branches: [ "main", "dev" ]
   pull_request:
     branches: [ "main", "dev" ]
- schedule:
+  schedule:
     - cron: "0 0 * * *"  # This runs the workflow every day at midnight UTC
-    
+
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
-  # Log in to Docker Hub or GitHub Container Registry
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'  # Specify your Python version
+
+    - name: Run Unit Tests
+      run: python -m unittest tests.py #Run python tests
+        
+    - name: Build the Docker image
+      id: build_image  # This id is necessary to refer to this step's output later
+      run: |
+        IMAGE_TAG=my-image-name:$(date +%s)  # Save the tag to a variable
+        docker build . --file Dockerfile --tag $IMAGE_TAG  # Use the tag for the build
+        echo "IMAGE_TAG=$IMAGE_TAG"  # Print the tag to the logs (optional)
+        echo "::set-output name=image_tag::$IMAGE_TAG"  # Save the tag as an output for later use
+
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-  # Push the Docker image
-    - name: Push the Docker image to Docker Hub or GitHub Container Registry
-      run: docker push my-image-name:$(date +%s)
+    - name: Build and Push Docker Image
+      uses: docker/build-push-action@v2
+      with:
+        context: .  # Use the current directory as the build context
+        file: ./Dockerfile  # Path to your Dockerfile
+        push: true  # Enable pushing to the registry
+        tags: ${{ secrets.DOCKER_USERNAME }}/my-image-name:latest  # Replace with your DockerHub repo and t
