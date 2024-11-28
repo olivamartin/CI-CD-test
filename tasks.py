@@ -38,7 +38,7 @@ def new_word(words):
     for i, word in enumerate(words):
         # Ensure the word is long enough to access the character at position 'i'
         formed_word += word[i]
-    return formed_word
+    return None #formed_word
 
 
 
